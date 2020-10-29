@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
   const hashPassword = Helper.hashPassword(req.body.password);
   const createQuery = `INSERT INTO
     users(fname, lname, username, pword, email, role, sex, address, created_date, phone)
-    VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9,10)
     RETURNING *`;
   const values = [
     req.body.fname,
