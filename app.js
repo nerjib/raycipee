@@ -87,6 +87,10 @@ app.post('/api/v1/recipe', Auth.verifyToken, async (req, res) => {
 app.get('/api/v1/recipe', Auth.verifyToken, async (req, res) => {
   Recipe.getAll(req, res);
 });
+app.get('/api/v1/myrecipe', Auth.verifyToken, async (req, res) => {
+  Recipe.getMyRecipe(req, res);
+});
+
 app.get('/api/v1/recipe/:id', Auth.verifyToken, async (req, res) => {
   Recipe.getOne(req, res);
 });

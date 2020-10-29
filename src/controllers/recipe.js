@@ -161,11 +161,35 @@ async function getOne(req, res) {
   }
 }
 
+async function getMyRecipe(req, res) {
+  const text = 'SELECT * FROM recipes WHERE userid = $1';
+  // const text = 'SELECT articles.article, comments.comment FROM articles INNER JOIN comments ON
+  // article.id=comments.userid';
+  try {
+    const { rows } = await db.query(text, [req.user.id]);
+    if (!rows[0]) {
+      return res.status(404).send({ message: ' Not found' });
+    }
+ //   const artRows = await db.query(articleComment, [req.params.id]);
+    const data = {
+      status: 'success',
+      data: {
+        rows,
+   //     comments: artRows.rows,
+      },
+    };
+    return res.status(200).json(rows);
+  } catch (error) {
+    return res.status(400).send(error);
+  }
+}
+
 module.exports = {
   postRecipe,
   updateRecipe,
   deleteRecipe,
   getAll,
   getOne,
+  getMyRecipe,
   postComment,
 };
