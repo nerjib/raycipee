@@ -9,7 +9,8 @@ INSERT INTO users (fname, username, pword, email, role, dept, address) VALUES ('
 
 CREATE TABLE IF NOT EXISTS comments(id SERIAL PRIMARY KEY, userid INT NOT NULL, comment TEXT NOT NULL, articleid INTEGER NOT NULL, post_date TIMESTAMP, FOREIGN KEY (articleid) REFERENCES articles(id));
 
-CREATE TABLE IF NOT EXISTS gifs(id SERIAL PRIMARY KEY, userId INT NOT NULL, title VARCHAR(128) NOT NULL, gifUrl TEXT NOT NULL, createdOn TIMESTAMP, FOREIGN KEY (userId) REFERENCES users(id));
+CREATE TABLE IF NOT EXISTS ingredients(id SERIAL PRIMARY KEY, recipeid INT NOT NULL, 
+name text NOT NULL, quantity TEXT NOT NULL, FOREIGN KEY (recipeid) REFERENCES recipes(id));
 
 CREATE TABLE IF NOT EXISTS gifComments(id SERIAL PRIMARY KEY, userid INT NOT NULL, comment TEXT NOT NULL, gifID INTEGER NOT NULL, post_date TIMESTAMP, FOREIGN KEY (gifid) REFERENCES gifs(id));
  
