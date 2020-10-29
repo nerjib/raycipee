@@ -1,0 +1,25 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=9f956ac7ecb8df3166383e49038550ea6cb2b6c5d7e646154ed6e2bbe14a1b2f
+
+language: node_js
+node_js:
+  - node
+    
+services:
+  - postgresql
+
+before_script:
+  - npm install
+  - npm install nyc -g
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+  
+script: "npm run-script test6"
+    
+after_script: 
+  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
