@@ -19,6 +19,8 @@ const Gifs = require('./src/controllers/gifs');
 const authUsersSignIn = require('./src/controllers/authSignIn');
 const Feeds = require('./src/controllers/feeds');
 const Ingredients = require('./src/controllers/ingredients');
+const Step = require('./src/controllers/procedure');
+
 
 
 const Auth = require('./src/middlewares/auth');
@@ -118,6 +120,20 @@ app.put('/api/v1/ingredients/:id', Auth.verifyToken, async (req, res) => {
 app.delete('/api/v1/ingredients/:id', Auth.verifyToken, async (req, res) => {
   Ingredients.deleteIngredient(req, res);
 });
+
+app.post('/api/v1/step', Auth.verifyToken, async (req, res) => {
+  Step.postSteps(req, res);
+});
+app.get('/api/v1/steps/:id', Auth.verifyToken, async (req, res) => {
+  Step.getAll(req, res);
+});
+app.put('/api/v1/step/:id', Auth.verifyToken, async (req, res) => {
+  Step.updateStep(req, res);
+});
+app.delete('/api/v1/step/:id', Auth.verifyToken, async (req, res) => {
+  Step.deleteStep(req, res);
+});
+
 
 app.use('/api/v1/users', Auth.verifyToken, Users);
 app.use('/api/v1/auth/create-user', authUsers);

@@ -4,18 +4,21 @@ const moment = require('moment');
 
 const db = require('../dbs/index');
 
-async function postIngredient(req, res) {
+async function postSteps(req, res) {
   if (req.body.name === '') {
     return res.status(402).send({ message: 'Some values are missing' });
   }
   const createQuery = `INSERT INTO
-      ingredients (name, quantity, recipeid, userid)
-      VALUES ($1, $2, $3, $4) RETURNING *`;
+      procedures (stepno, step, stepdescription,stepduration,stepimg, recipeid, userid)
+      VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
 
   console.log(req);
   const values = [
-    req.body.name,
-    req.body.quantity,
+    req.body.stepno,
+    req.body.step,
+    req.body.description,
+    req.body.duration,
+    req.body.imgurl,
     req.body.recipeid,
     req.user.id,
  ];
@@ -25,10 +28,10 @@ async function postIngredient(req, res) {
     const data = {
       status: 'success',
       data: {
-        message: 'ingredients successfully posted​',
+        message: 'step added successfully​',
         articleId: rows[0].id,
-        createdOn: rows[0].name,
-        title: rows[0].quantity,
+        createdOn: rows[0].step,
+        title: rows[0].stepdescription,
       },
     };
     return res.status(201).send(data);
@@ -39,7 +42,7 @@ async function postIngredient(req, res) {
 
 // update article
 
-async function updateIngredients(req, res) {
+async function updateStep(req, res) {
   const findOneQuery = 'SELECT * FROM articles WHERE id=$1';
   const updateOneQuery = `UPDATE articles
       SET article=$1 WHERE id=$2  AND  userid=$3 RETURNING *`;
@@ -71,8 +74,8 @@ async function updateIngredients(req, res) {
 }
 
 // delete an article
-async function deleteIngredient(req, res) {
-  const deleteQuery = 'DELETE FROM ingredients WHERE id=$1 and userid=$2 returning  *';
+async function deleteStep(req, res) {
+  const deleteQuery = 'DELETE FROM procedures WHERE id=$1 and userid=$2 returning  *';
   // console.log(req.user.id);
   // i'll come back and put & user.id
   try {
@@ -83,7 +86,7 @@ async function deleteIngredient(req, res) {
     return res.status(200).send({
       status: 'success',
       data: {
-        message: 'Recipe successfully deleted',
+        message: 'step successfully deleted',
       },
     });
   } catch (error) {
@@ -93,7 +96,7 @@ async function deleteIngredient(req, res) {
 
 // select all articles
 async function getAll(req, res) {
-  const findAllQuery = 'SELECT * FROM ingredients where recipeid=$1 ORDER BY id ASC';
+  const findAllQuery = 'SELECT * FROM procedures where recipeid=$1 ORDER BY id ASC';
   try {
     const { rows } = await db.query(findAllQuery, [req.params.id]);
     return res.status(200).send({ status: 'success', rows });
@@ -103,8 +106,8 @@ async function getAll(req, res) {
 }
 
 module.exports = {
-  postIngredient,
-  updateIngredients,
-  deleteIngredient,
+  postSteps,
+  updateStep,
+  deleteStep,
   getAll,
 };
