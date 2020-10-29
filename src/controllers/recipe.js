@@ -5,6 +5,9 @@ const moment = require('moment');
 const db = require('../dbs/index');
 
 async function postRecipe(req, res) {
+  if (req.body.title === '') {
+    return res.status(402).send({ message: 'Some values are missing' });
+  }
   const createQuery = `INSERT INTO
       recipes (userid, title, about,category, budget, duration, serves, createdon)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`;
