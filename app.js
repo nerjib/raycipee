@@ -14,7 +14,7 @@ const db = require('./src/dbs/index');
 const Helper = require('./src/controllers/helper');
 const Users = require('./src/controllers/users');
 const authUsers = require('./src/controllers/authUsers');
-const Articles = require('./src/controllers/Articles');
+const Recipe = require('./src/controllers/recipe');
 const Gifs = require('./src/controllers/gifs');
 const authUsersSignIn = require('./src/controllers/authSignIn');
 const Feeds = require('./src/controllers/feeds');
@@ -81,23 +81,23 @@ const upload = multer({
 });
 
 // app.use('/api/v1/articles', Articles);
-app.post('/api/v1/articles', Auth.verifyToken, async (req, res) => {
-  Articles.postArticle(req, res);
+app.post('/api/v1/recipe', Auth.verifyToken, async (req, res) => {
+  Recipe.postRecipe(req, res);
 });
-app.get('/api/v1/articles', Auth.verifyToken, async (req, res) => {
-  Articles.getAll(req, res);
+app.get('/api/v1/recipe', Auth.verifyToken, async (req, res) => {
+  Recipe.getAll(req, res);
 });
-app.get('/api/v1/articles/:id', Auth.verifyToken, async (req, res) => {
-  Articles.getOne(req, res);
+app.get('/api/v1/recipe/:id', Auth.verifyToken, async (req, res) => {
+  Recipe.getOne(req, res);
 });
-app.post('/api/v1/articles/:id/comment', Auth.verifyToken, async (req, res) => {
-  Articles.postComment(req, res);
+app.post('/api/v1/recipe/:id/comment', Auth.verifyToken, async (req, res) => {
+  Recipe.postComment(req, res);
 });
-app.put('/api/v1/articles/:id', Auth.verifyToken, async (req, res) => {
-  Articles.updateArticle(req, res);
+app.put('/api/v1/recipe/:id', Auth.verifyToken, async (req, res) => {
+  Recipe.updateArticle(req, res);
 });
-app.delete('/api/v1/articles/:id', Auth.verifyToken, async (req, res) => {
-  Articles.deleteArticle(req, res);
+app.delete('/api/v1/recipe/:id', Auth.verifyToken, async (req, res) => {
+  Recipe.deleteArticle(req, res);
 });
 app.use('/api/v1/users', Auth.verifyToken, Users);
 app.use('/api/v1/auth/create-user', authUsers);

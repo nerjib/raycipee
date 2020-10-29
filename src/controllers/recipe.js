@@ -4,15 +4,20 @@ const moment = require('moment');
 
 const db = require('../dbs/index');
 
-async function postArticle(req, res) {
+async function postRecipe(req, res) {
   const createQuery = `INSERT INTO
-      articles (userid, title, article, createdon)
-      VALUES ($1, $2, $3, $4) RETURNING *`;
+      recipes (userid, title, about,category, budget, duration, serves, createdon)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`;
+
   console.log(req);
   const values = [
     req.user.id,
     req.body.title,
-    req.body.article,
+    req.body.about,
+    req.body.category,
+    req.body.budget,
+    req.body.duration,
+    req.body.serves,
     moment(new Date()),
   ];
   try {
@@ -21,10 +26,11 @@ async function postArticle(req, res) {
     const data = {
       status: 'success',
       data: {
-        message: 'Article successfully posted​',
+        message: 'recipe successfully posted​',
         articleId: rows[0].id,
         createdOn: rows[0].createdon,
         title: rows[0].title,
+        category: rows[0].category,
       },
     };
     return res.status(201).send(data);
@@ -35,7 +41,7 @@ async function postArticle(req, res) {
 
 // update article
 
-async function updateArticle(req, res) {
+async function updateRecipe(req, res) {
   const findOneQuery = 'SELECT * FROM articles WHERE id=$1 AND userid = $2';
   const updateOneQuery = `UPDATE articles
       SET article=$1 WHERE id=$2  AND  userid=$3 RETURNING *`;
@@ -67,19 +73,19 @@ async function updateArticle(req, res) {
 }
 
 // delete an article
-async function deleteArticle(req, res) {
-  const deleteQuery = 'DELETE FROM articles WHERE id=$1 and userid=$2 returning  *';
+async function deleteRecipe(req, res) {
+  const deleteQuery = 'DELETE FROM recipe WHERE id=$1 and userid=$2 returning  *';
   // console.log(req.user.id);
   // i'll come back and put & user.id
   try {
     const { rows } = await db.query(deleteQuery, [req.params.id, req.user.id]);
     if (!rows[0]) {
-      return res.status(404).send({ message: 'Article not found' });
+      return res.status(404).send({ message: 'recipe not found' });
     }
     return res.status(200).send({
       status: 'success',
       data: {
-        message: 'Article successfully deleted',
+        message: 'Recipe successfully deleted',
       },
     });
   } catch (error) {
@@ -118,7 +124,7 @@ async function postComment(req, res)  {
 
 // select all articles
 async function getAll(req, res) {
-  const findAllQuery = 'SELECT * FROM articles ORDER BY createdon DESC';
+  const findAllQuery = 'SELECT * FROM recipes ORDER BY createdon DESC';
   try {
     const { rows } = await db.query(findAllQuery);
     return res.status(200).send({ status: 'success', rows });
@@ -129,22 +135,22 @@ async function getAll(req, res) {
 
 
 async function getOne(req, res) {
-  const text = 'SELECT * FROM articles WHERE id = $1';
+  const text = 'SELECT * FROM recipes WHERE id = $1';
   // const text = 'SELECT articles.article, comments.comment FROM articles INNER JOIN comments ON
   // article.id=comments.userid';
-  const articleComment = 'SELECT * FROM comments WHERE articleid= $1';
+  const articleComment = 'SELECT * FROM comments WHERE recipeid= $1';
   console.log(req.params.id);
   try {
     const { rows } = await db.query(text, [req.params.id]);
     if (!rows[0]) {
       return res.status(404).send({ message: 'Article Not found' });
     }
-    const artRows = await db.query(articleComment, [req.params.id]);
+ //   const artRows = await db.query(articleComment, [req.params.id]);
     const data = {
       status: 'success',
       data: {
         rows,
-        comments: artRows.rows,
+   //     comments: artRows.rows,
       },
     };
     return res.status(200).json(data);
@@ -154,9 +160,9 @@ async function getOne(req, res) {
 }
 
 module.exports = {
-  postArticle,
-  updateArticle,
-  deleteArticle,
+  postRecipe,
+  updateRecipe,
+  deleteRecipe,
   getAll,
   getOne,
   postComment,
