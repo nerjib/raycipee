@@ -9,8 +9,8 @@ async function postRecipe(req, res) {
     return res.status(402).send({ message: 'Some values are missing' });
   }
   const createQuery = `INSERT INTO
-      recipes (userid, title, about,category, budget, duration, serves, createdon)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`;
+      recipes (userid, title, about,category, budget, serves, createdon)
+      VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
 
   console.log(req);
   const values = [
@@ -19,7 +19,6 @@ async function postRecipe(req, res) {
     req.body.about,
     req.body.category,
     req.body.budget,
-    req.body.duration,
     req.body.serves,
     moment(new Date()),
   ];
