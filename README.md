@@ -44,7 +44,7 @@ by providing the information bellow
 
 # View an all recipes posted by user 
 # GET /api/v1/recipe 
-# token reqquiired
+ token reqquiired
 
 # view a particular recipe
 # GET /api/v1/recipe/:id
@@ -52,7 +52,7 @@ by providing the information bellow
 
 # delete a particular recipe 
 # /api/v1/recipe/:id
-# token required
+ token required
 
 
 # Post recipe
@@ -71,7 +71,7 @@ By providing their token in the header, the recipe id and submitting
 
 # update ingredient
 # /api/v1/ingredients/:id
-# ingredient id
+ingredient id
 
 # delete ingredient
 # DELETE /api/v1/ingredients/:id
@@ -92,8 +92,8 @@ By providing their token in the header, the recipe id and submitting
 
 # view all step for a recipe
 # /api/v1/steps/:id
-# recipe id
+recipe id
 
 # delete step
 # DELETE '/api/v1/step/:id
-# step id
+ step id
