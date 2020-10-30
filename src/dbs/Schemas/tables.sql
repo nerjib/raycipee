@@ -12,5 +12,9 @@ CREATE TABLE IF NOT EXISTS comments(id SERIAL PRIMARY KEY, userid INT NOT NULL, 
 CREATE TABLE IF NOT EXISTS ingredients(id SERIAL PRIMARY KEY, recipeid INT NOT NULL, 
 name text NOT NULL, quantity TEXT NOT NULL, FOREIGN KEY (recipeid) REFERENCES recipes(id));
 
+CREATE TABLE IF NOT EXISTS procedures(id SERIAL PRIMARY KEY, recipeid INT NOT NULL, 
+stepno integer, step varchar, stepdescription text, duration integer, imgurl varchar,
+userid int not null,  FOREIGN KEY (recipeid) REFERENCES recipes(id));
+
 CREATE TABLE IF NOT EXISTS gifComments(id SERIAL PRIMARY KEY, userid INT NOT NULL, comment TEXT NOT NULL, gifID INTEGER NOT NULL, post_date TIMESTAMP, FOREIGN KEY (gifid) REFERENCES gifs(id));
  
